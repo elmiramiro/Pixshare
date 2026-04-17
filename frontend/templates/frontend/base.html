@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Pixshare</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+            color: #262626;
+        }
+
+        .topbar {
+            background: white;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+        }
+
+        .topbar-inner {
+            width: 935px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 28px;
+            font-weight: bold;
+            color: #262626;
+            text-decoration: none;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #0095f6;
+            margin-left: 15px;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #ed4956;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .container {
+            width: 935px;
+            margin: 30px auto;
+        }
+
+        .message {
+            width: 600px;
+            margin: 0 auto 20px auto;
+            background: #e7f3ff;
+            border: 1px solid #b6daff;
+            color: #084298;
+            padding: 12px 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .card {
+            width: 600px;
+            margin: 0 auto 25px auto;
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .card-content {
+            padding: 18px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #8e8e8e;
+            margin-bottom: 10px;
+        }
+
+        .post-image {
+            width: 100%;
+            display: block;
+        }
+
+        .actions {
+            margin-top: 14px;
+        }
+
+        .actions form {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        button {
+            background: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button.secondary {
+            background: #efefef;
+            color: #262626;
+        }
+
+        .auth-card {
+            width: 400px;
+            margin: 40px auto;
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .auth-card h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            margin-bottom: 14px;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background: #fafafa;
+        }
+
+        small {
+            color: #8e8e8e;
+        }
+
+        .errorlist {
+            color: #ed4956;
+            margin: 0 0 10px 0;
+            padding-left: 20px;
+        }
+
+        .center-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .center-link a {
+            color: #0095f6;
+            text-decoration: none;
+        }
+
+        .comment-block {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #efefef;
+        }
+
+        .comment-item {
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="{% url 'post_list' %}">Pixshare</a>
+
+            <div class="nav">
+                <a href="{% url 'post_list' %}">Главная</a>
+                <a href="{% url 'post_create' %}">Создать пост</a>
+
+                {% if user.is_authenticated %}
+                    <span>Вы вошли как {{ user.username }}</span>
+
+                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn">Выйти</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}">Войти</a>
+                    <a href="{% url 'register' %}">Регистрация</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

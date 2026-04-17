@@ -1,0 +1,66 @@
+{% extends 'frontend/base.html' %}
+
+{% block content %}
+    <div class="card">
+        {% if post.image %}
+            <img class="post-image" src="{{ post.image.url }}" alt="Изображение">
+        {% endif %}
+
+        <div class="card-content">
+            <div class="meta">
+                Автор: {{ post.author.username }} | Дата: {{ post.created_at }}
+            </div>
+
+            <p>{{ post.text }}</p>
+            <p><strong>Лайков:</strong> {{ post.likes.count }}</p>
+
+            {% if user.is_authenticated %}
+                <div class="actions">
+                    <form action="{% url 'add_like' post.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Лайк</button>
+                    </form>
+
+                    <form action="{% url 'remove_like' post.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="secondary">Убрать лайк</button>
+                    </form>
+                </div>
+            {% endif %}
+
+            {% if user == post.author %}
+                <form action="{% url 'delete_post' post.id %}" method="post" style="margin-top:10px;">
+                    {% csrf_token %}
+                    <button type="submit" class="secondary">Удалить пост</button>
+                </form>
+            {% endif %}
+
+            <div class="comment-block">
+                <h3>Комментарии</h3>
+
+                {% for comment in post.comments.all %}
+                    <div class="comment-item">
+                        <strong>{{ comment.author.username }}</strong>: {{ comment.text }}
+                        <br>
+                        <small>{{ comment.created_at }}</small>
+                    </div>
+                {% empty %}
+                    <p>Комментариев пока нет.</p>
+                {% endfor %}
+            </div>
+
+            {% if user.is_authenticated %}
+                <div class="comment-block">
+                    <h3>Добавить комментарий</h3>
+
+                    <form method="post" action="{% url 'add_comment' post.id %}">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <button type="submit">Отправить</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,29 @@
+{% extends 'frontend/base.html' %}
+
+{% block content %}
+    <h1 style="text-align:center; margin-bottom:30px;">Лента публикаций</h1>
+
+    {% for post in posts %}
+        <div class="card">
+            {% if post.image %}
+                <img class="post-image" src="{{ post.image.url }}" alt="Изображение">
+            {% endif %}
+
+            <div class="card-content">
+                <div class="meta">
+                    Автор: {{ post.author.username }} | Дата: {{ post.created_at }}
+                </div>
+
+                <p>{{ post.text }}</p>
+                <p><strong>Лайков:</strong> {{ post.likes.count }}</p>
+                <p><strong>Комментариев:</strong> {{ post.comments.count }}</p>
+
+                <a href="{% url 'post_detail' post.id %}">Открыть пост</a>
+            </div>
+        </div>
+    {% empty %}
+        <div class="auth-card">
+            <p>Постов пока нет.</p>
+        </div>
+    {% endfor %}
+{% endblock %}

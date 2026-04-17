@@ -1,0 +1,56 @@
+{% extends 'frontend/base.html' %}
+
+{% block content %}
+<div class="auth-card">
+    <h2>Регистрация</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+        {{ form.username }}
+
+        <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+        {{ form.password1 }}
+
+        <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+        {{ form.password2 }}
+
+        <div style="margin-bottom: 15px;">
+            <input type="checkbox" id="show-passwords" onclick="togglePasswords()">
+            <label for="show-passwords">Показать пароль</label>
+        </div>
+
+        <small>Пароль должен быть не менее 8 символов и не быть слишком простым.</small>
+
+        {% if form.errors %}
+            <div style="color:#ed4956; margin-top:15px;">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+
+        <div style="margin-top: 20px;">
+            <button type="submit">Зарегистрироваться</button>
+        </div>
+    </form>
+
+    <div class="center-link">
+        Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
+    </div>
+</div>
+
+<script>
+function togglePasswords() {
+    const password1 = document.getElementById("id_password1");
+    const password2 = document.getElementById("id_password2");
+
+    if (password1.type === "password") {
+        password1.type = "text";
+        password2.type = "text";
+    } else {
+        password1.type = "password";
+        password2.type = "password";
+    }
+}
+</script>
+{% endblock %}
