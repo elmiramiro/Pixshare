@@ -15,6 +15,7 @@ Pixshare - это веб-приложение, реализующее базов
 - Django REST Framework
 - PostgreSQL
 - HTML / CSS (Django templates)
+- JavaScript
 
 ---
 
