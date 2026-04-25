@@ -1,4 +1,4 @@
-# 📸 Pixshare — социальная сеть для обмена фотографиями
+# 📸 Pixshare - социальная сеть для обмена фотографиями
 
 ## 📌 Описание проекта
 
@@ -13,7 +13,7 @@ Pixshare — это веб-приложение, реализующее базо
 - Python 3.11
 - Django
 - Django REST Framework
-- SQLite
+- PostgreSQL
 - HTML / CSS (Django templates)
 
 ---
