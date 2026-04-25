@@ -5,17 +5,28 @@ from posts.models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
+    title = forms.CharField(
+        label='Название поста',
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Придумайте короткое название...',
+            'maxlength': '100',
+            'class': 'title-input'
+        })
+    )
+
     text = forms.CharField(
         label='Текст поста',
         widget=forms.Textarea(attrs={
             'rows': 4,
-            'placeholder': 'Напишите текст публикации...'
+            'placeholder': 'Напишите текст публикации...',
+            'class': 'text-input'
         })
     )
 
     class Meta:
         model = Post
-        fields = ['text', 'image']
+        fields = ['title', 'text', 'image']
         labels = {
             'image': 'Изображение',
         }
@@ -52,13 +63,3 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'password1', 'password2')
-
-    def clean_password2(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
-
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError('Пароли не совпадают')
-
-        return password2
-

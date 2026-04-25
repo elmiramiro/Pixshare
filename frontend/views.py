@@ -70,6 +70,23 @@ def remove_like(request, pk):
         messages.success(request, 'Лайк убран')
     return redirect('post_detail', pk=pk)
 
+@login_required
+def edit_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    if post.author != request.user:
+        return HttpResponseForbidden("Вы не можете редактировать чужой пост")
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Пост обновлён')
+            return redirect('post_detail', pk=pk)
+    else:
+        form = PostForm(instance=post)
+
+    return render(request, 'frontend/post_edit.html', {'form': form, 'post': post})
 
 @login_required
 def delete_post(request, pk):

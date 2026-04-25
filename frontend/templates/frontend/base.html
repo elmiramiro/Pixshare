@@ -6,79 +6,110 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #fafafa;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 45%, #f6f8ff 100%);
             color: #262626;
         }
 
         .topbar {
-            background: white;
-            border-bottom: 1px solid #dbdbdb;
-            padding: 14px 0;
+            background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
+            padding: 16px 0;
+            color: white;
             position: sticky;
             top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.15);
         }
 
         .topbar-inner {
-            width: 935px;
+            max-width: 980px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 18px;
         }
 
         .brand {
-            font-size: 28px;
-            font-weight: bold;
-            color: #262626;
+            font-size: 30px;
+            font-weight: 800;
+            color: white;
             text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
         }
 
         .nav a {
+            color: white;
             text-decoration: none;
-            color: #0095f6;
-            margin-left: 15px;
+            font-weight: 700;
+        }
+
+        .nav span {
             font-weight: 600;
+            color: #fff;
         }
 
         .logout-btn {
-            background: none;
-            border: none;
-            color: #ed4956;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.35);
+            color: white;
             cursor: pointer;
-            font-weight: 600;
-            margin-left: 15px;
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 8px 14px;
         }
 
         .container {
-            width: 935px;
-            margin: 30px auto;
+            max-width: 980px;
+            margin: 34px auto;
+            padding: 0 18px;
         }
 
         .message {
-            width: 600px;
-            margin: 0 auto 20px auto;
+            max-width: 620px;
+            margin: 0 auto 22px auto;
             background: #e7f3ff;
             border: 1px solid #b6daff;
             color: #084298;
-            padding: 12px 15px;
-            border-radius: 10px;
+            padding: 12px 16px;
+            border-radius: 14px;
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: 800;
         }
 
         .card {
-            width: 600px;
-            margin: 0 auto 25px auto;
-            background: white;
-            border: 1px solid #dbdbdb;
-            border-radius: 12px;
+            max-width: 620px;
+            margin: 0 auto 30px auto;
+            background: rgba(255,255,255,0.96);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.09);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 38px rgba(0,0,0,0.13);
         }
 
         .card-content {
-            padding: 18px;
+            padding: 20px;
         }
 
         .meta {
@@ -87,28 +118,82 @@
             margin-bottom: 10px;
         }
 
+        .post-title {
+            font-size: 25px;
+            margin: 8px 0 10px 0;
+            font-weight: 800;
+        }
+
+        .post-text {
+            line-height: 1.55;
+            font-size: 16px;
+            color: #333;
+        }
+
         .post-image {
             width: 100%;
+            max-height: 360px;
+            object-fit: cover;
             display: block;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .post-image:hover {
+            opacity: 0.9;
+        }
+
+        .post-image-detail {
+            width: 100%;
+            max-height: 430px;
+            object-fit: contain;
+            background: #f3f3f3;
+            display: block;
+            cursor: pointer;
+        }
+
+        .stats {
+            display: flex;
+            gap: 18px;
+            color: #555;
+            font-size: 15px;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        .open-link {
+            display: inline-block;
+            margin-top: 14px;
+            color: #833ab4;
+            text-decoration: none;
+            font-weight: 800;
         }
 
         .actions {
-            margin-top: 14px;
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .actions form {
             display: inline-block;
-            margin-right: 10px;
         }
 
         button {
-            background: #0095f6;
+            background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 10px 14px;
+            border-radius: 12px;
+            padding: 10px 16px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 800;
+            transition: transform 0.18s ease, opacity 0.18s ease;
+        }
+
+        button:hover {
+            transform: scale(1.04);
+            opacity: 0.92;
         }
 
         button.secondary {
@@ -116,13 +201,17 @@
             color: #262626;
         }
 
+        button.secondary:hover {
+            background: #dedede;
+        }
+
         .auth-card {
-            width: 400px;
-            margin: 40px auto;
-            background: white;
-            border: 1px solid #dbdbdb;
-            border-radius: 12px;
-            padding: 30px;
+            max-width: 430px;
+            margin: 45px auto;
+            background: rgba(255,255,255,0.96);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.09);
         }
 
         .auth-card h2 {
@@ -135,82 +224,190 @@
         textarea,
         input[type="file"] {
             width: 100%;
-            padding: 12px;
-            margin-top: 6px;
-            margin-bottom: 14px;
-            border: 1px solid #dbdbdb;
-            border-radius: 8px;
+            padding: 13px;
+            margin-top: 7px;
+            margin-bottom: 15px;
+            border: 1px solid #d7d7d7;
+            border-radius: 12px;
             box-sizing: border-box;
             background: #fafafa;
+            font-size: 15px;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #833ab4;
+            box-shadow: 0 0 0 3px rgba(131,58,180,0.12);
         }
 
         small {
-            color: #8e8e8e;
-        }
-
-        .errorlist {
-            color: #ed4956;
-            margin: 0 0 10px 0;
-            padding-left: 20px;
+            color: #777;
         }
 
         .center-link {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 16px;
         }
 
         .center-link a {
-            color: #0095f6;
+            color: #833ab4;
             text-decoration: none;
+            font-weight: 700;
         }
 
         .comment-block {
-            margin-top: 15px;
-            padding-top: 10px;
+            margin-top: 18px;
+            padding-top: 12px;
             border-top: 1px solid #efefef;
         }
 
         .comment-item {
             margin-bottom: 12px;
+            line-height: 1.5;
+            background: #fafafa;
+            padding: 10px 12px;
+            border-radius: 12px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            padding-top: 40px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.88);
+        }
+
+        .modal img {
+            display: block;
+            max-width: 85%;
+            max-height: 85%;
+            margin: auto;
+            border-radius: 14px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: white;
+            font-size: 42px;
+            cursor: pointer;
+        }
+
+        #toTop {
+            display: none;
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            padding: 12px 16px;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
+            color: white;
+            border: none;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+            z-index: 300;
+        }
+
+        .heart {
+            font-size: 17px;
+        }
+
+        @media (max-width: 700px) {
+            .topbar-inner {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .card {
+                max-width: 100%;
+            }
+
+            .post-image {
+                max-height: 290px;
+            }
+
+            .brand {
+                font-size: 26px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="topbar">
-        <div class="topbar-inner">
-            <a class="brand" href="{% url 'post_list' %}">Pixshare</a>
+<div class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="{% url 'post_list' %}">Pixshare</a>
 
-            <div class="nav">
-                <a href="{% url 'post_list' %}">Главная</a>
-                <a href="{% url 'post_create' %}">Создать пост</a>
+        <div class="nav">
+            <a href="{% url 'post_list' %}">Главная</a>
+            <a href="{% url 'post_create' %}">Создать пост</a>
 
-                {% if user.is_authenticated %}
-                    <span>Вы вошли как {{ user.username }}</span>
-
-                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="logout-btn">Выйти</button>
-                    </form>
-                {% else %}
-                    <a href="{% url 'login' %}">Войти</a>
-                    <a href="{% url 'register' %}">Регистрация</a>
-                {% endif %}
-            </div>
+            {% if user.is_authenticated %}
+                <span>Вы вошли как {{ user.username }}</span>
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}">Регистрация</a>
+            {% endif %}
         </div>
     </div>
+</div>
 
-    <div class="container">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="message">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+<div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
 
-        {% block content %}{% endblock %}
-    </div>
+    {% block content %}{% endblock %}
+</div>
+
+<div id="imageModal" class="modal">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <img id="modalImage">
+</div>
+
+<button id="toTop" onclick="scrollToTop()">↑</button>
+
+<script>
+    function openModal(src) {
+        document.getElementById("imageModal").style.display = "block";
+        document.getElementById("modalImage").src = src;
+    }
+
+    function closeModal() {
+        document.getElementById("imageModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById("imageModal");
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+
+    window.onscroll = function() {
+        const btn = document.getElementById("toTop");
+        if (document.documentElement.scrollTop > 300) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    }
+
+    function scrollToTop() {
+        window.scrollTo({top: 0, behavior: "smooth"});
+    }
+</script>
 
 </body>
 </html>

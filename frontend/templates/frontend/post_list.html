@@ -1,12 +1,15 @@
 {% extends 'frontend/base.html' %}
 
 {% block content %}
-    <h1 style="text-align:center; margin-bottom:30px;">Лента публикаций</h1>
+    <h1 class="page-title">Лента публикаций</h1>
 
     {% for post in posts %}
         <div class="card">
             {% if post.image %}
-                <img class="post-image" src="{{ post.image.url }}" alt="Изображение">
+                <img class="post-image"
+                     src="{{ post.image.url }}"
+                     alt="Изображение"
+                     onclick="openModal('{{ post.image.url }}')">
             {% endif %}
 
             <div class="card-content">
@@ -14,11 +17,18 @@
                     Автор: {{ post.author.username }} | Дата: {{ post.created_at }}
                 </div>
 
-                <p>{{ post.text }}</p>
-                <p><strong>Лайков:</strong> {{ post.likes.count }}</p>
-                <p><strong>Комментариев:</strong> {{ post.comments.count }}</p>
+                <h2 class="post-title">{{ post.title }}</h2>
 
-                <a href="{% url 'post_detail' post.id %}">Открыть пост</a>
+                <p class="post-text">{{ post.text|truncatewords:35 }}</p>
+
+                <div class="stats">
+                    <span class="heart">❤️ {{ post.likes.count }}</span>
+                    <span>💬 {{ post.comments.count }}</span>
+                </div>
+
+                <a class="open-link" href="{% url 'post_detail' post.id %}">
+                    Открыть пост
+                </a>
             </div>
         </div>
     {% empty %}

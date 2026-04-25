@@ -3,7 +3,7 @@
 {% block content %}
 <div class="card">
     <div class="card-content">
-        <h1 style="text-align:center;">Создать пост</h1>
+        <h1 style="text-align:center;">Редактировать пост</h1>
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -18,13 +18,23 @@
             <label><strong>Изображение</strong></label>
             {{ form.image }}
 
+            {% if post.image %}
+                <div style="margin-top:15px;">
+                    <p><strong>Текущее изображение:</strong></p>
+                    <img src="{{ post.image.url }}" style="max-width:100%; max-height:330px; object-fit:cover; border-radius:14px;">
+                </div>
+            {% endif %}
+
             <div id="preview-container" style="display:none; margin-top:15px;">
-                <p><strong>Предпросмотр изображения:</strong></p>
+                <p><strong>Новое изображение:</strong></p>
                 <img id="image-preview" style="max-width:100%; max-height:330px; object-fit:cover; border-radius:14px;">
             </div>
 
             <div style="margin-top:20px;">
-                <button type="submit">Создать</button>
+                <button type="submit">Сохранить</button>
+                <a href="{% url 'post_detail' post.id %}">
+                    <button type="button" class="secondary">Отмена</button>
+                </a>
             </div>
         </form>
     </div>
@@ -34,7 +44,9 @@
     const titleInput = document.getElementById("id_title");
     const counter = document.getElementById("title-counter");
 
-    if (titleInput) {
+    if (titleInput && counter) {
+        counter.textContent = titleInput.value.length + " / 100 символов";
+
         titleInput.addEventListener("input", function () {
             counter.textContent = titleInput.value.length + " / 100 символов";
         });

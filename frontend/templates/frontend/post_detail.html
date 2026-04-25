@@ -3,7 +3,10 @@
 {% block content %}
     <div class="card">
         {% if post.image %}
-            <img class="post-image" src="{{ post.image.url }}" alt="Изображение">
+            <img class="post-image-detail"
+                 src="{{ post.image.url }}"
+                 alt="Изображение"
+                 onclick="openModal('{{ post.image.url }}')">
         {% endif %}
 
         <div class="card-content">
@@ -11,14 +14,20 @@
                 Автор: {{ post.author.username }} | Дата: {{ post.created_at }}
             </div>
 
-            <p>{{ post.text }}</p>
-            <p><strong>Лайков:</strong> {{ post.likes.count }}</p>
+            <h2 class="post-title">{{ post.title }}</h2>
+
+            <p class="post-text">{{ post.text }}</p>
+
+            <div class="stats">
+                <span class="heart">❤️ {{ post.likes.count }}</span>
+                <span>💬 {{ post.comments.count }}</span>
+            </div>
 
             {% if user.is_authenticated %}
                 <div class="actions">
                     <form action="{% url 'add_like' post.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit">Лайк</button>
+                        <button type="submit">❤️ Лайк</button>
                     </form>
 
                     <form action="{% url 'remove_like' post.id %}" method="post">
@@ -29,10 +38,19 @@
             {% endif %}
 
             {% if user == post.author %}
-                <form action="{% url 'delete_post' post.id %}" method="post" style="margin-top:10px;">
-                    {% csrf_token %}
-                    <button type="submit" class="secondary">Удалить пост</button>
-                </form>
+                <div class="actions">
+                    <a href="{% url 'edit_post' post.id %}">
+                        <button type="button" class="secondary">Редактировать</button>
+                    </a>
+
+                    <form action="{% url 'delete_post' post.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="secondary"
+                                onclick="return confirm('Вы действительно хотите удалить этот пост?')">
+                            Удалить пост
+                        </button>
+                    </form>
+                </div>
             {% endif %}
 
             <div class="comment-block">
@@ -40,7 +58,24 @@
 
                 {% for comment in post.comments.all %}
                     <div class="comment-item">
-                        <strong>{{ comment.author.username }}</strong>: {{ comment.text }}
+                        <strong>{{ comment.author.username }}</strong>:
+
+                        <span id="short-comment-{{ comment.id }}">
+                            {{ comment.text|truncatewords:10 }}
+                            {% if comment.text|wordcount > 10 %}
+                                <a href="#" onclick="showFullComment({{ comment.id }}); return false;">
+                                    Читать полностью
+                                </a>
+                            {% endif %}
+                        </span>
+
+                        <span id="full-comment-{{ comment.id }}" style="display:none;">
+                            {{ comment.text }}
+                            <a href="#" onclick="hideFullComment({{ comment.id }}); return false;">
+                                Свернуть
+                            </a>
+                        </span>
+
                         <br>
                         <small>{{ comment.created_at }}</small>
                     </div>
@@ -62,5 +97,16 @@
             {% endif %}
         </div>
     </div>
-{% endblock %}
 
+    <script>
+        function showFullComment(commentId) {
+            document.getElementById('short-comment-' + commentId).style.display = 'none';
+            document.getElementById('full-comment-' + commentId).style.display = 'inline';
+        }
+
+        function hideFullComment(commentId) {
+            document.getElementById('full-comment-' + commentId).style.display = 'none';
+            document.getElementById('short-comment-' + commentId).style.display = 'inline';
+        }
+    </script>
+{% endblock %}
